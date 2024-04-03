@@ -1,9 +1,10 @@
 import React from 'react';
+import { Search } from "./search.tsx";
 
 export const ParticipantList: React.FC = () => {
   return (
     <div>
-      <h1>ParticipantList</h1>
+      <Search/>
     </div>
   );
 };
