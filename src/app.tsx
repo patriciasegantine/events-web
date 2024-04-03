@@ -1,8 +1,10 @@
+import { Header } from "./components/header.tsx";
+
 export function App() {
   
   return (
-    <h1 className="text-3xl font-bold underline">
-      App
-    </h1>
+    <div className="max-w-[1216px] mx-auto py-5">
+      <Header/>
+    </div>
   )
 }
