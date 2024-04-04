@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
       
       <nav className="flex gap-5">
         <NavLink title={'Events'} href={'/events'}/>
-        <NavLink title={'Participants'} href={'/participants'}/>
+        <NavLink title={'Participants'} href={'/mockData'}/>
       </nav>
     </div>
   );

@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Search } from "./search.tsx";
 import { Table } from "./table/table.tsx";
 import { Checkbox } from "./checkbox.tsx";
 import { TableCell } from "./table/table-cell.tsx";
 import { IconButton } from "./icon-button.tsx";
-import { CaretDoubleLeft, CaretDoubleRight, CaretLeft, CaretRight, DotsThree } from "phosphor-react";
+import { DotsThree } from "phosphor-react";
 import { TableHeader } from "./table/table-header.tsx";
+import { mockData } from "../data/mock-data.ts";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { Pagination } from "./pagination.tsx";
+
+dayjs.extend(relativeTime)
+
+export interface IPagination {
+  currentPage: number,
+  pageSize: number,
+  total: number
+}
 
 export const ParticipantList: React.FC = () => {
+  
+  const [pagination, setPagination] = useState<IPagination>({
+    currentPage: 1,
+    pageSize: 10,
+    total: mockData.length
+  })
   
   return (
     <div className="flex flex-col gap-4">
@@ -26,26 +44,31 @@ export const ParticipantList: React.FC = () => {
         
         <tbody>
         {
-          Array.from({length: 10}).map((_, i) => {
+          mockData.slice((pagination.currentPage - 1) * 10, pagination.currentPage * 10).map((participant) => {
             return (
-              <tr key={i} className="border-b border-white/10 hover:bg-white/5">
+              <tr key={participant?.id} className="border-b border-white/10 hover:bg-white/5">
                 <TableCell>
                   <Checkbox/>
                 </TableCell>
                 
-                <TableCell>65454654</TableCell>
+                <TableCell>{participant?.id}</TableCell>
                 
                 <TableCell>
                   <div className="flex flex-col gap-1 font-semibold">
-                    <span className="font-semibold text-white">Patricia Segantine</span>
-                    <span>patriciasegantine@email.com</span>
+                    <span className="font-semibold text-white">{participant?.name}</span>
+                    <span>{participant?.email}</span>
                   </div>
                 </TableCell>
                 
-                <TableCell>20.03.04</TableCell>
-                <TableCell>20.03.04</TableCell>
+                <TableCell title={dayjs().to(dayjs(participant?.createdAt))}>
+                  {dayjs(participant?.createdAt).format('DD/MM/YYYY')}
+                </TableCell>
+                
+                <TableCell title={dayjs().to(dayjs(participant?.checkedInAt))}>
+                  {dayjs(participant?.checkedInAt).format('DD/MM/YYYY')}
+                </TableCell>
                 <TableCell>
-                  <IconButton transparent>
+                  <IconButton>
                     <DotsThree/></IconButton>
                 </TableCell>
               </tr>
@@ -56,18 +79,11 @@ export const ParticipantList: React.FC = () => {
         
         <tfoot>
         <tr>
-          <TableCell colSpan={3}>Showing 3 of 100 items</TableCell>
+          <TableCell
+            colSpan={3}>Showing {pagination.currentPage * pagination.pageSize} of {pagination.total} items</TableCell>
           
           <TableCell colSpan={3}>
-            <div className="flex gap-5 items-center justify-end">
-              <span>Page 1 of 11</span>
-              <div className="flex gap-2 ">
-                <IconButton onClick={() => console.log('first')}><CaretDoubleLeft/></IconButton>
-                <IconButton onClick={() => console.log('back')}><CaretLeft/></IconButton>
-                <IconButton onClick={() => console.log('next')}><CaretRight/></IconButton>
-                <IconButton onClick={() => console.log('last')}><CaretDoubleRight/></IconButton>
-              </div>
-            </div>
+            <Pagination pagination={pagination} setPagination={setPagination}/>
           </TableCell>
         </tr>
         </tfoot>
