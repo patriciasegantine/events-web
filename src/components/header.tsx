@@ -1,6 +1,6 @@
 import React from 'react';
 import { Logo } from "./logo.tsx";
-import { Link } from "./link.tsx";
+import { NavLink } from "./nav-link.tsx";
 
 export const Header: React.FC = () => {
   return (
@@ -11,8 +11,8 @@ export const Header: React.FC = () => {
       </div>
       
       <nav className="flex gap-5">
-        <Link title={'Events'} href={'#'}/>
-        <Link title={'Participants'} href={'#'}/>
+        <NavLink title={'Events'} href={'/events'}/>
+        <NavLink title={'Participants'} href={'/participants'}/>
       </nav>
     </div>
   );
